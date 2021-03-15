@@ -16,6 +16,6 @@
 
 </style>
 
-<MaterialApp {theme}>
+<MaterialApp  {theme}>
   <Router {routes} />
 </MaterialApp>

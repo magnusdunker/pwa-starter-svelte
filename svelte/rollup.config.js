@@ -5,10 +5,17 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import css from "rollup-plugin-css-only";
+import dotenv from "dotenv";
+import replace from "@rollup/plugin-replace";
 const { preprocess } = require("./svelte.config");
 
 const production = !process.env.ROLLUP_WATCH;
-
+const envProd = process.env.IS_PROD;
+if (envProd === "true") {
+  dotenv.config({ path: ".env.prod" });
+} else {
+  dotenv.config({ path: ".env" });
+}
 function serve() {
   let server;
 
@@ -19,14 +26,10 @@ function serve() {
   return {
     writeBundle() {
       if (server) return;
-      server = require("child_process").spawn(
-        "npm",
-        ["run", "start", "--", "--dev"],
-        {
-          stdio: ["ignore", "inherit", "inherit"],
-          shell: true,
-        }
-      );
+      server = require("child_process").spawn("npm", ["run", "start", "--", "--dev"], {
+        stdio: ["ignore", "inherit", "inherit"],
+        shell: true,
+      });
 
       process.on("SIGTERM", toExit);
       process.on("exit", toExit);
@@ -43,6 +46,10 @@ export default {
     file: "../dist/svelte.js",
   },
   plugins: [
+    replace({
+      URL: JSON.stringify(process.env.URL),
+      URL23: JSON.stringify(process.env.URL),
+    }),
     svelte({
       preprocess,
       compilerOptions: {

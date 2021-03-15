@@ -2,7 +2,6 @@
   "dependencies": {
     "concurrently": "^6.0.0",
     "copyfiles": "^2.4.1",
-    "prettier-plugin-svelte": "^2.1.6",
     "pwa-asset-generator": "^4.1.1",
     "serve": "^11.3.2",
     "sirv": "^1.0.11"
